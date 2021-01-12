@@ -42,7 +42,7 @@ public class AdminUser {
 
     private int loginFailCount;
 
-    private LocalDateTime registerdAt;
+    private LocalDateTime registeredAt;
 
     private LocalDateTime unregisteredAt;
 

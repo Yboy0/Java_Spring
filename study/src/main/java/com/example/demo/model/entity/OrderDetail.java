@@ -51,7 +51,7 @@ public class OrderDetail {
 
     //OrderDetail N:1 Item
     @ManyToOne
-    private Item itemId;
+    private Item item;
 
     //OrderDetail N:1 OrderGroup
     @ManyToOne

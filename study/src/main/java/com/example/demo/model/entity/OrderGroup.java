@@ -19,7 +19,7 @@ import java.util.List;
 @Accessors(chain = true)
 @Data
 @Entity
-@ToString(exclude = {"user","orderDetail"})
+@ToString(exclude = {"user","orderDetailList"})
 @EntityListeners(AuditingEntityListener.class)
 public class OrderGroup {
 
