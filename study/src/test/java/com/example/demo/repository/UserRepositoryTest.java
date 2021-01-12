@@ -64,7 +64,7 @@ public class UserRepositoryTest {
         user.ifPresent(selectUser -> {
             selectUser.setAccount("pppp");
             selectUser.setUpdatedAt(LocalDateTime.now());
-            selectUser.setUpdatedBy("update method()");
+           // selectUser.setUpdatedBy("update method()");
 
             userRepository.save(selectUser);
         });

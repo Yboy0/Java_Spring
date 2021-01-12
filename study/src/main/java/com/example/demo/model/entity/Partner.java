@@ -1,9 +1,12 @@
 package com.example.demo.model.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
+import lombok.experimental.Accessors;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -11,9 +14,12 @@ import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
+@Accessors(chain = true)
 @Data
 @Entity
 @ToString(exclude = {"itemList","category"})
+@EntityListeners(AuditingEntityListener.class)
 public class Partner {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,10 +43,17 @@ public class Partner {
 
     private LocalDateTime unregisteredAt;
 
+    @CreatedDate
     private LocalDateTime createdAt;
 
+    @CreatedBy // 자동으로 LoginUserAuditorAware에 있는 값으로 설정됨
     private String createdBy;
 
+    @LastModifiedDate
+    private LocalDateTime updatedAt;
+
+    @LastModifiedBy // 자동으로 LoginUserAuditorAware에 있는 값으로 설정됨
+    private LocalDateTime updatedBy;
 
     private Long categoryId1;
 
