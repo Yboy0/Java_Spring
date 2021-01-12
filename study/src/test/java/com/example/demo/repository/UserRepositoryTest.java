@@ -53,6 +53,8 @@ public class UserRepositoryTest {
     @Test
     public void read(){
         Optional<User> user =userRepository.findFirstByPhoneNumberOrderByIdDesc("010-1111-2222");
+
+
         Assertions.assertNotNull(user);
     }
     @Test

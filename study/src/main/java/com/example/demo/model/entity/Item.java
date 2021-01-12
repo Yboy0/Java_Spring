@@ -1,13 +1,19 @@
 package com.example.demo.model.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
+@AllArgsConstructor
+@NoArgsConstructor
 @Data
 @Entity
+@ToString(exclude = {"orderDetailList","partner"})
 public class Item {
 
     @Id
@@ -38,8 +44,6 @@ public class Item {
 
     private LocalDateTime updatedBy;
 
-    private Long partnerId;
-
 
 
     //1 : N
@@ -49,5 +53,13 @@ public class Item {
     //Lazy = SELECT * FROM item where id=?
 
     //EAGER = 1:1
+
+    //Item N:1 Partner
+    @ManyToOne
+    private Partner partner;
+
+    //Item 1:N OrderDetail
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "item")
+    private List<OrderDetail> orderDetailList;
 
 }
