@@ -1,8 +1,17 @@
 package com.example.demo.model.network.response;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
+@Builder
 public class ItemApiResponse {
     private Long id;
 
