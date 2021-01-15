@@ -28,7 +28,7 @@ public class Header<T> {
     //OK
     public static<T> Header<T> OK(){
         return (Header<T>) Header.builder()
-                .transactionTime(LocalDateTime.now())
+               .transactionTime(LocalDateTime.now())
                 .resultCode("OK")
                 .description("OK")
                 .build();
@@ -37,7 +37,7 @@ public class Header<T> {
     //Data OK
     public static<T> Header<T> OK(T data){
         return (Header<T>) Header.builder()
-                .transactionTime(LocalDateTime.now())
+               .transactionTime(LocalDateTime.now())
                 .resultCode("OK")
                 .description("OK")
                 .data(data)
