@@ -2,6 +2,7 @@ package com.example.demo.repository;
 
 import com.example.demo.model.entity.Item;
 import com.example.demo.model.entity.User;
+import com.example.demo.model.enumclass.UserStatus;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -28,7 +29,7 @@ public class UserRepositoryTest {
     public void create(){
         String account= "Test01";
         String password = "Test01";
-        String status = "REGISTERED";
+        UserStatus status = UserStatus.REGISTERED;
         String email = "Test01@gmail.com";
         String phoneNumber = "010-1111-2222";
         LocalDateTime registeredAt = LocalDateTime.now();

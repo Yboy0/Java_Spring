@@ -35,7 +35,7 @@ public class UserApiLogicService extends BaseService<UserApiRequest,UserApiRespo
         User user = User.builder()
                 .account(userApiRequest.getAccount())
                 .password(userApiRequest.getPassword())
-                .status(UserStatus.REGiSTERED)
+                .status(UserStatus.REGISTERED)
                 .phoneNumber(userApiRequest.getPhoneNumber())
                 .email(userApiRequest.getEmail())
 //                .registeredAt(LocalDateTime.now())

@@ -2,6 +2,7 @@ package com.example.demo.repository;
 
 
 import com.example.demo.model.entity.Item;
+import com.example.demo.model.enumclass.ItemStatus;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -26,9 +27,9 @@ public class ItemRepositoryTest {
         item.setName("애플 노트북");
         item.setTitle("애플 노트북 A100");
         item.setBrandName("애플");
-        item.setPrice(100000);
+       // item.setPrice(100000);
         item.setContent("2020 맥 노트");
-        item.setStatus("UNREGISTERED");
+        item.setStatus(ItemStatus.REGISTERED);
         item.setRegisteredAt(LocalDateTime.now());
         item.setCreatedAt(LocalDateTime.now());
         item.setCreatedBy("Partner01");
