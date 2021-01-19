@@ -15,10 +15,7 @@ import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
-public class ItemApiLogicService implements CrudInterface<ItemApiRequest, ItemApiResponse> {
-
-    @Autowired
-    private ItemRepository itemRepository;
+public class ItemApiLogicService extends BaseService<ItemApiRequest,ItemApiResponse,Item> {
 
     @Autowired
     private PartnerRepository partnerRepository;
@@ -39,13 +36,13 @@ public class ItemApiLogicService implements CrudInterface<ItemApiRequest, ItemAp
                     .registeredAt(LocalDateTime.now())
                     .partner(partnerRepository.getOne(body.getPartnerId()))
                     .build();
-        Item newItem = itemRepository.save(item);
+        Item newItem = baseRepository.save(item);
         return response(newItem);
     }
 
     @Override
     public Header<ItemApiResponse> read(Long id) {
-        return itemRepository.findById(id)
+        return baseRepository.findById(id)
                 .map(item -> response(item))
                 .orElseGet(()-> Header.Error("데이터 없음"));
 
@@ -56,7 +53,7 @@ public class ItemApiLogicService implements CrudInterface<ItemApiRequest, ItemAp
 
                 ItemApiRequest body = request.getData();
 
-               return itemRepository.findById(body.getId())
+               return baseRepository.findById(body.getId())
                         .map(entityItem -> {
                             entityItem
                                     .setStatus(body.getStatus())
@@ -70,7 +67,7 @@ public class ItemApiLogicService implements CrudInterface<ItemApiRequest, ItemAp
                                     ;
                             return entityItem;
                         })
-                        .map(newEntityItem -> itemRepository.save(newEntityItem))
+                        .map(newEntityItem -> baseRepository.save(newEntityItem))
                         .map(item -> response(item))
                         .orElseGet(()-> Header.Error("데이터 없음"));
 
@@ -79,9 +76,9 @@ public class ItemApiLogicService implements CrudInterface<ItemApiRequest, ItemAp
     @Override
     public Header delete(Long id) {
 
-        return itemRepository.findById(id)
+        return baseRepository.findById(id)
                 .map(item -> {
-                    itemRepository.delete(item);
+                    baseRepository.delete(item);
                     return Header.OK();
                 })
                 .orElseGet(()->Header.Error("데이터 없음"));
