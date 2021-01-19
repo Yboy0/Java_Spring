@@ -55,7 +55,7 @@ public class Item {
     private LocalDateTime updatedAt;
 
     @LastModifiedBy // 자동으로 LoginUserAuditorAware에 있는 값으로 설정됨
-    private LocalDateTime updatedBy;
+    private String updatedBy;
 
 
 

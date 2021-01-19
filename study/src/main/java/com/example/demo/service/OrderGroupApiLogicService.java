@@ -43,7 +43,7 @@ public class OrderGroupApiLogicService extends BaseService<OrderGroupApiRequest,
                 .revAddress(body.getRevAddress())
                 .revName(body.getRevName())
                 .paymentType(body.getPaymentType())
-                .totalprice(body.getTotalPrice())
+                .totalPrice(body.getTotalPrice())
                 .totalQuantity(body.getTotalQuantity())
                 .orderAt(LocalDateTime.now())
                 .user(userRepository.getOne(body.getUserId()))
@@ -77,7 +77,7 @@ public class OrderGroupApiLogicService extends BaseService<OrderGroupApiRequest,
                             .setRevAddress(body.getRevAddress())
                             .setRevName(body.getRevName())
                             .setPaymentType(body.getPaymentType())
-                            .setTotalprice(body.getTotalPrice())
+                            .setTotalPrice(body.getTotalPrice())
                             .setTotalQuantity(body.getTotalQuantity())
                             .setOrderAt(body.getOrderAt())
                             .setArrivalDate(body.getArrivalDate())
@@ -125,7 +125,7 @@ public class OrderGroupApiLogicService extends BaseService<OrderGroupApiRequest,
         return Header.OK(orderGroupApiResponseList);
     }
 
-    private OrderGroupApiResponse response(OrderGroup orderGroup){
+    public OrderGroupApiResponse response(OrderGroup orderGroup){
         OrderGroupApiResponse body = OrderGroupApiResponse.builder()
                 .id(orderGroup.getId())
                 .status(orderGroup.getStatus())
@@ -133,7 +133,7 @@ public class OrderGroupApiLogicService extends BaseService<OrderGroupApiRequest,
                 .revAddress(orderGroup.getRevAddress())
                 .revName(orderGroup.getRevName())
                 .paymentType(orderGroup.getPaymentType())
-                .totalPrice(orderGroup.getTotalprice())
+                .totalPrice(orderGroup.getTotalPrice())
                 .totalQuantity(orderGroup.getTotalQuantity())
                 .orderAt(orderGroup.getOrderAt())
                 .arrivalDate(orderGroup.getArrivalDate())

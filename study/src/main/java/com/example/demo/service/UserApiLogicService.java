@@ -2,12 +2,17 @@ package com.example.demo.service;
 
 import com.example.demo.controller.CrudController;
 import com.example.demo.ifs.CrudInterface;
+import com.example.demo.model.entity.OrderDetail;
+import com.example.demo.model.entity.OrderGroup;
 import com.example.demo.model.entity.User;
 import com.example.demo.model.enumclass.UserStatus;
 import com.example.demo.model.network.Header;
 import com.example.demo.model.network.Pagination;
 import com.example.demo.model.network.request.UserApiRequest;
+import com.example.demo.model.network.response.ItemApiResponse;
+import com.example.demo.model.network.response.OrderGroupApiResponse;
 import com.example.demo.model.network.response.UserApiResponse;
+import com.example.demo.model.network.response.UserOrderInfoApiResponse;
 import com.example.demo.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,12 +29,15 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UserApiLogicService extends BaseService<UserApiRequest,UserApiResponse,User> {
 
-
-
     // 1.request data
     // 2. user 생성
     // 3. 생성된 데이터 -> UserApiResponse return
 
+    @Autowired
+    private OrderGroupApiLogicService orderGroupApiLogicService;
+
+    @Autowired
+    private ItemApiLogicService itemApiLogicService;
     @Override
     public Header<UserApiResponse> create(Header<UserApiRequest> request) {
         // client에서 요청한 data를 request body로 받아서 data 들을 꺼내서 entity 객체 생성
@@ -149,4 +157,37 @@ public class UserApiLogicService extends BaseService<UserApiRequest,UserApiRespo
                 .build();
         return Header.OK(userApiResponseList);
     }
+
+    public Header<UserOrderInfoApiResponse> orderInfo(Long id){
+        //user
+        User user = baseRepository.getOne(id);
+        UserApiResponse userApiResponse = response(user);
+
+        //orderGroup
+        List<OrderGroup> orderGroupList = user.getOrderGroupList();
+
+        List<OrderGroupApiResponse> orderGroupApiResponseList =orderGroupList.stream()
+                .map(orderGroup -> {
+                   OrderGroupApiResponse orderGroupApiResponse = orderGroupApiLogicService.response(orderGroup);
+                   List<ItemApiResponse> itemApiResponseList =  orderGroup.getOrderDetailList().stream()
+                            .map(detail -> detail.getItem())
+                            .map(item -> itemApiLogicService.response(item))
+                            .collect(Collectors.toList());
+                   orderGroupApiResponse.setItemApiResponseList(itemApiResponseList);
+                   return orderGroupApiResponse;
+                })
+                .collect(Collectors.toList());
+
+        userApiResponse.setOrderGroupApiResponseList((orderGroupApiResponseList));
+
+        UserOrderInfoApiResponse userOrderInfoApiResponse = UserOrderInfoApiResponse.builder()
+                .userApiResponse(userApiResponse)
+                .build();
+
+        return Header.OK(userOrderInfoApiResponse);
+
+    }
+
+
+
 }

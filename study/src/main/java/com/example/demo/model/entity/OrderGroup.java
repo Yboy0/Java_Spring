@@ -39,7 +39,7 @@ public class OrderGroup {
 
     private String paymentType; //카드 / 현금
 
-    private BigDecimal totalprice;
+    private BigDecimal totalPrice;
 
     private Integer totalQuantity;
 
@@ -57,7 +57,7 @@ public class OrderGroup {
     private LocalDateTime updatedAt;
 
     @LastModifiedBy // 자동으로 LoginUserAuditorAware에 있는 값으로 설정됨
-    private LocalDateTime updatedBy;
+    private String updatedBy;
 
 
     // OrdeGroup N:1 user

@@ -7,6 +7,7 @@ import com.example.demo.model.entity.User;
 import com.example.demo.model.network.Header;
 import com.example.demo.model.network.request.UserApiRequest;
 import com.example.demo.model.network.response.UserApiResponse;
+import com.example.demo.model.network.response.UserOrderInfoApiResponse;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.UserApiLogicService;
 import jdk.internal.org.jline.utils.Log;
@@ -27,5 +28,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserApiController extends CrudController<UserApiRequest, UserApiResponse, User> {
 
+    @Autowired
+    private UserApiLogicService userApiLogicService;
+    @GetMapping("/{id}/orderInfo")
+    public Header<UserOrderInfoApiResponse> orderInfo(@PathVariable Long id ){
+        return userApiLogicService.orderInfo(id);
+    }
 
 }

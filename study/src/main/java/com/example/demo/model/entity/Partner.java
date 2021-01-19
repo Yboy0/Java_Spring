@@ -53,9 +53,9 @@ public class Partner {
     private LocalDateTime updatedAt;
 
     @LastModifiedBy // 자동으로 LoginUserAuditorAware에 있는 값으로 설정됨
-    private LocalDateTime updatedBy;
+    private String updatedBy;
 
-    private Long categoryId1;
+    //private Long categoryId1;
 
     //Partner N:1 Category
     @ManyToOne
