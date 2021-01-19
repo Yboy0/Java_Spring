@@ -5,15 +5,20 @@ import com.example.demo.ifs.CrudInterface;
 import com.example.demo.model.entity.User;
 import com.example.demo.model.enumclass.UserStatus;
 import com.example.demo.model.network.Header;
+import com.example.demo.model.network.Pagination;
 import com.example.demo.model.network.request.UserApiRequest;
 import com.example.demo.model.network.response.UserApiResponse;
 import com.example.demo.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -43,7 +48,7 @@ public class UserApiLogicService extends BaseService<UserApiRequest,UserApiRespo
         User newUser = baseRepository.save(user);
 
         //생성된 데이터 -> UserApiResponse return
-        return response(newUser);
+        return Header.OK(response(newUser));
     }
 
     @Override
@@ -55,6 +60,7 @@ public class UserApiLogicService extends BaseService<UserApiRequest,UserApiRespo
         //user -> userApiResponse return
         return  optional
                 .map(user -> response(user))
+                .map(userApiResponse -> Header.OK(userApiResponse))
                 .orElseGet(
                         () -> Header.Error("데이터 없음")
                 );
@@ -86,6 +92,7 @@ public class UserApiLogicService extends BaseService<UserApiRequest,UserApiRespo
         })
         .map(user -> baseRepository.save(user)) //update -> newUser
         .map(user -> response(user)) //userApiResponse
+        .map(Header::OK)
         .orElseGet(()-> Header.Error("데이터 없음"));
         // 4. userApiResponse
 
@@ -106,7 +113,7 @@ public class UserApiLogicService extends BaseService<UserApiRequest,UserApiRespo
 
     }
 
-    private  Header<UserApiResponse> response(User user){
+    private  UserApiResponse response(User user){
         //user -> userResponse 객체 만들어서 return 해준다.
 
         UserApiResponse userApiResponse=UserApiResponse.builder()
@@ -121,6 +128,25 @@ public class UserApiLogicService extends BaseService<UserApiRequest,UserApiRespo
                 .build();
 
         // Header + data return
-        return Header.OK(userApiResponse);
+        return userApiResponse;
+    }
+
+    @Override
+    public Header<List<UserApiResponse>> search(Pageable pageable) {
+        Page<User> users = baseRepository.findAll(pageable);
+
+        List<UserApiResponse> userApiResponseList =users.stream()
+                .map(user -> response(user))
+                .collect(Collectors.toList());
+        //List<UserApiResponse>
+        //Header<List<UserApiResponse>>
+
+        Pagination pagination  = Pagination.builder()
+                .totalPages(users.getTotalPages())
+                .totalElements(users.getTotalElements())
+                .currentPage(users.getNumber())
+                .currentElements(users.getNumberOfElements())
+                .build();
+        return Header.OK(userApiResponseList);
     }
 }

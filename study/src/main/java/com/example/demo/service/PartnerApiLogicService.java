@@ -4,6 +4,7 @@ import com.example.demo.model.entity.Partner;
 import com.example.demo.model.network.Header;
 import com.example.demo.model.network.request.PartnerApiRequest;
 import com.example.demo.model.network.response.PartnerApiResponse;
+import org.springframework.data.domain.Pageable;
 
 public class PartnerApiLogicService extends  BaseService<PartnerApiRequest, PartnerApiResponse, Partner> {
 
@@ -27,6 +28,11 @@ public class PartnerApiLogicService extends  BaseService<PartnerApiRequest, Part
 
     @Override
     public Header delete(Long id) {
+        return null;
+    }
+
+    @Override
+    public Header search(Pageable pageable) {
         return null;
     }
 

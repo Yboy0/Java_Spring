@@ -2,16 +2,23 @@ package com.example.demo.service;
 
 import com.example.demo.ifs.CrudInterface;
 import com.example.demo.model.entity.Item;
+import com.example.demo.model.entity.User;
 import com.example.demo.model.network.Header;
+import com.example.demo.model.network.Pagination;
 import com.example.demo.model.network.request.ItemApiRequest;
 import com.example.demo.model.network.response.ItemApiResponse;
+import com.example.demo.model.network.response.UserApiResponse;
 import com.example.demo.repository.ItemRepository;
 import com.example.demo.repository.PartnerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -37,13 +44,14 @@ public class ItemApiLogicService extends BaseService<ItemApiRequest,ItemApiRespo
                     .partner(partnerRepository.getOne(body.getPartnerId()))
                     .build();
         Item newItem = baseRepository.save(item);
-        return response(newItem);
+        return Header.OK(response(newItem));
     }
 
     @Override
     public Header<ItemApiResponse> read(Long id) {
         return baseRepository.findById(id)
                 .map(item -> response(item))
+                .map(ItemApiResponse -> Header.OK(ItemApiResponse))
                 .orElseGet(()-> Header.Error("데이터 없음"));
 
     }
@@ -69,6 +77,7 @@ public class ItemApiLogicService extends BaseService<ItemApiRequest,ItemApiRespo
                         })
                         .map(newEntityItem -> baseRepository.save(newEntityItem))
                         .map(item -> response(item))
+                        .map(Header::OK)
                         .orElseGet(()-> Header.Error("데이터 없음"));
 
     }
@@ -84,7 +93,26 @@ public class ItemApiLogicService extends BaseService<ItemApiRequest,ItemApiRespo
                 .orElseGet(()->Header.Error("데이터 없음"));
     }
 
-    private Header<ItemApiResponse> response(Item item){
+    @Override
+    public Header<List<ItemApiResponse>> search(Pageable pageable) {
+        Page<Item> items = baseRepository.findAll(pageable);
+
+        List<ItemApiResponse> ItemApiResponseList =items.stream()
+                .map(item -> response(item))
+                .collect(Collectors.toList());
+        //List<UserApiResponse>
+        //Header<List<UserApiResponse>>
+
+        Pagination pagination  = Pagination.builder()
+                .totalPages(items.getTotalPages())
+                .totalElements(items.getTotalElements())
+                .currentPage(items.getNumber())
+                .currentElements(items.getNumberOfElements())
+                .build();
+        return Header.OK(ItemApiResponseList);
+    }
+
+    private ItemApiResponse response(Item item){
 
         ItemApiResponse body = ItemApiResponse.builder()
                 .id(item.getId())
@@ -99,6 +127,6 @@ public class ItemApiLogicService extends BaseService<ItemApiRequest,ItemApiRespo
                 .partnerId(item.getPartner().getId())
                 .build();
 
-        return Header.OK(body);
+        return body;
     }
 }
