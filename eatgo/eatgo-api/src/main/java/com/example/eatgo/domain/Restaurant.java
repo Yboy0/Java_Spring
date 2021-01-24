@@ -1,5 +1,6 @@
 package com.example.eatgo.domain;
 
+import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Transient;
+import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,8 +24,10 @@ public class Restaurant {
     @GeneratedValue
     private Long id;
 
+    @NotEmpty
     private String name;
 
+    @NotEmpty
     private String address;
 
     private String regionName;
