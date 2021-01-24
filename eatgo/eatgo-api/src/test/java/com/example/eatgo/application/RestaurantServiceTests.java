@@ -70,6 +70,7 @@ public class RestaurantServiceTests {
                 .address("Busan")
                 .build();
 
+
         Restaurant created = restaurantService.addRestaurant(restaurant);
 
         assertThat(created.getId()).isEqualTo(1234L);
@@ -77,7 +78,11 @@ public class RestaurantServiceTests {
     @Test
     public void updateRestaurant(){
 
-        Restaurant restaurant = new Restaurant(1004L,"Bob zip","Seoul");
+        Restaurant restaurant = Restaurant.builder()
+                .id(1004L)
+                .name("Bob")
+                .address("Seoul")
+                .build();
         //DB에서 해당 id 값 바꾸고
         given(restaurantRepository.findById(1004L))
                 .willReturn(Optional.of(restaurant));

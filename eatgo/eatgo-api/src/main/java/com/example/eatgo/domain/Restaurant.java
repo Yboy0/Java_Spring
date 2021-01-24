@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,16 +21,27 @@ public class Restaurant {
     @Id
     @GeneratedValue
     private Long id;
+
     private String name;
+
     private String address;
-   // private MenuItem menuItems;
+
+    private String regionName;
+
+    private String categoryName;
+
+    private String tagNames;
+
+    @Transient
+    private List<MenuItem> menuItems;
 
 
     public String getInformation(){
         return name + " "+ address;
     }
-//   public void addMenuItem(MenuItem menuItem){
-//        menuItems.add(menuItem);
-//    }
 
+    public void setMenuItems(List<MenuItem> menuItems) {
+        this.menuItems = new ArrayList<>(menuItems);
+
+    }
 }

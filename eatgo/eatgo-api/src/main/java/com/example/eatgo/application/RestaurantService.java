@@ -29,6 +29,7 @@ public class RestaurantService {
         Optional<Restaurant> restaurant = restaurantRepository.findById(id);
         return restaurant;
     }
+
     public Restaurant addRestaurant(Restaurant restaurant){
         Restaurant saved = restaurantRepository.save(restaurant);
         return saved ;

@@ -14,6 +14,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.hamcrest.Matchers.containsString;
@@ -38,7 +39,11 @@ public class RestaurantControllerTests {
     public void list() throws Exception {
         //restaurantService = new RestaurantService(new RestaurantRepositoryImpl());
         List<Restaurant> restaurants = new ArrayList<>();
-        restaurants.add(new Restaurant(1L,"Bob","Seoul"));
+        restaurants.add(Restaurant.builder()
+                .id(1L)
+                .name("Bob")
+                .address("Seoul")
+                .build());
 
         given(restaurantService.getRestaurants()).willReturn(restaurants);
 
@@ -53,9 +58,17 @@ public class RestaurantControllerTests {
     }
     @Test
     public void detail() throws Exception {
-        Restaurant restaurant=new Restaurant(1L,"Bob","Seoul");
-     //   restaurant.addMenuItem(new MenuItem("kimchi"));
-        given(restaurantService.getRestaurant(1L)).willReturn(java.util.Optional.of(restaurant));
+        Restaurant restaurant=Restaurant.builder()
+                .id(1L)
+                .name("Bob")
+                .address("Seoul")
+                .build();
+        restaurant.setMenuItems(Arrays.asList(MenuItem.builder()
+                .name("kimchi")
+                .build()));
+
+        given(restaurantService.getRestaurant(1L))
+                .willReturn(java.util.Optional.of(restaurant));
 
         mvc.perform(get("/restaurants/1"))
                 .andExpect(status().isOk())
@@ -76,7 +89,7 @@ public class RestaurantControllerTests {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"name\":\"Yboy\",\"address\":\"Seoul\"}"))
                 .andExpect(status().isCreated())
-                .andExpect(header().string("location","/restaurants/1234"))
+                .andExpect(header().string("location","/restaurants/null"))
                 .andExpect(content().string("{}"));
 
         verify(restaurantService).addRestaurant(any());
@@ -87,9 +100,9 @@ public class RestaurantControllerTests {
     public void update() throws Exception {
         mvc.perform(patch("/restaurants/1024")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"name\":\"JOKER Bar\", \"address\":\"Seoul\"}"))
+                .content("{\"name\":\"JOKER BAR\", \"address\":\"Seoul\"}"))
                 .andExpect(status().isOk());
 
-        verify(restaurantService).updateRestaurant(1004L,"Joker bar","Busan");
+        verify(restaurantService).updateRestaurant(1024L,"JOKER BAR","Busan");
     }
 }
