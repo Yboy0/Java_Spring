@@ -83,4 +83,13 @@ public class RestaurantControllerTests {
 
 
     }
+    @Test
+    public void update() throws Exception {
+        mvc.perform(patch("/restaurants/1024")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"name\":\"JOKER Bar\", \"address\":\"Seoul\"}"))
+                .andExpect(status().isOk());
+
+        verify(restaurantService).updateRestaurant(1004L,"Joker bar","Busan");
+    }
 }

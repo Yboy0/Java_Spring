@@ -20,7 +20,6 @@ public class Restaurant {
     @Id
     @GeneratedValue
     private Long id;
-
     private String name;
     private String address;
    // private MenuItem menuItems;

@@ -5,6 +5,7 @@ import com.example.eatgo.domain.RestaurantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,5 +32,17 @@ public class RestaurantService {
     public Restaurant addRestaurant(Restaurant restaurant){
         Restaurant saved = restaurantRepository.save(restaurant);
         return saved ;
+    }
+
+    @Transactional
+    public Restaurant updateRestaurant(Long id, String name, String address) {
+
+        Restaurant restaurant = restaurantRepository.findById(id)
+                .orElse(null);
+
+        restaurant.setName(name);
+        restaurant.setAddress(address);
+
+        return restaurant;
     }
 }
