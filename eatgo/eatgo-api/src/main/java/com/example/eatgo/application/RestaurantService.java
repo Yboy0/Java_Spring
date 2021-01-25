@@ -1,8 +1,6 @@
 package com.example.eatgo.application;
 
-import com.example.eatgo.domain.Restaurant;
-import com.example.eatgo.domain.RestaurantNotFoundException;
-import com.example.eatgo.domain.RestaurantRepository;
+import com.example.eatgo.domain.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,12 +11,18 @@ import java.util.Optional;
 @Service
 public class RestaurantService {
 
+
+    private RestaurantRepository restaurantRepository;
+    private MenuItemRepository menuItemRepository;
+    private ReviewRepository reviewRepository;
+
     @Autowired
-    RestaurantRepository restaurantRepository;
-
-
-    public RestaurantService(RestaurantRepository restaurantRepository){
+    public RestaurantService(RestaurantRepository restaurantRepository,
+                             MenuItemRepository menuItemRepository,
+                             ReviewRepository reviewRepository){
         this.restaurantRepository = restaurantRepository;
+        this.menuItemRepository = menuItemRepository;
+        this.reviewRepository = reviewRepository;
     }
 
     public List<Restaurant> getRestaurants(){
@@ -29,6 +33,12 @@ public class RestaurantService {
     public Restaurant getRestaurant(Long id){
         Restaurant restaurant = restaurantRepository.findById(id)
                 .orElseThrow(()-> new RestaurantNotFoundException(id));
+
+        List<MenuItem> menuItems = menuItemRepository.findAllByRestaurantId(id);
+        restaurant.setMenuItems(menuItems);
+
+        List<Review> reviews = reviewRepository.findAllByRestaurantId(id);
+        restaurant.setReviews(reviews);
         return restaurant;
     }
 

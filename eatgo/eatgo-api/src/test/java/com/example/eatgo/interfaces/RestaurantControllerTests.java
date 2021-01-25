@@ -3,7 +3,7 @@ package com.example.eatgo.interfaces;
 //import jdk.internal.jshell.tool.ConsoleIOContext;
 import com.example.eatgo.application.RestaurantService;
 import com.example.eatgo.domain.*;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -67,6 +67,13 @@ public class RestaurantControllerTests {
                 .name("kimchi")
                 .build()));
 
+        Review review = Review.builder()
+                .name("JOKER")
+                .score(5)
+                .description("GOOD")
+                .build();
+        restaurant.setReviews(Arrays.asList(review));
+
         given(restaurantService.getRestaurant(1L))
                 .willReturn(restaurant);
 
@@ -80,7 +87,9 @@ public class RestaurantControllerTests {
                 ))
                 .andExpect(content().string(
                         containsString("kimchi")
-                ));
+                ))
+                .andExpect(content().string(
+                        containsString("GOOD")));
     }
 
     @Test
@@ -109,7 +118,7 @@ public class RestaurantControllerTests {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"name\":\"Yboy\",\"address\":\"Seoul\"}"))
                 .andExpect(status().isCreated())
-                .andExpect(header().string("location", "/restaurants/1234"))
+                .andExpect(header().string("location", "/restaurants/null"))
                 .andExpect(content().string("{}"));
 
         verify(restaurantService).addRestaurant(any());

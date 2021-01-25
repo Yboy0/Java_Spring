@@ -20,6 +20,7 @@ public class MenuItemService {
         for(MenuItem menuItem : menuItems){
             update(restaurantId, menuItem);
         }
+
     }
 
     private void update(Long restaurantId, MenuItem menuItem) {
