@@ -1,6 +1,7 @@
 package com.example.eatgo.application;
 
 import com.example.eatgo.domain.Restaurant;
+import com.example.eatgo.domain.RestaurantNotFoundException;
 import com.example.eatgo.domain.RestaurantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,8 +26,9 @@ public class RestaurantService {
         return restaurants;
     }
 
-    public Optional<Restaurant> getRestaurant(Long id){
-        Optional<Restaurant> restaurant = restaurantRepository.findById(id);
+    public Restaurant getRestaurant(Long id){
+        Restaurant restaurant = restaurantRepository.findById(id)
+                .orElseThrow(()-> new RestaurantNotFoundException(id));
         return restaurant;
     }
 
@@ -38,8 +40,7 @@ public class RestaurantService {
     @Transactional
     public Restaurant updateRestaurant(Long id, String name, String address) {
 
-        Restaurant restaurant = restaurantRepository.findById(id)
-                .orElse(null);
+        Restaurant restaurant = restaurantRepository.findById(id).orElse(null);
 
         restaurant.setName(name);
         restaurant.setAddress(address);

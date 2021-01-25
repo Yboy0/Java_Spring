@@ -1,8 +1,11 @@
 package com.example.eatgo.application;
 
+import com.example.eatgo.domain.MenuItem;
 import com.example.eatgo.domain.Restaurant;
+import com.example.eatgo.domain.RestaurantNotFoundException;
 import com.example.eatgo.domain.RestaurantRepository;
 import org.junit.Before;
+import org.junit.internal.runners.statements.ExpectException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -45,7 +48,7 @@ public class RestaurantServiceTests {
         given(restaurantRepository.findAll()).willReturn(restaurants);
 
         given(restaurantRepository.findById(1004L))
-                .willReturn(Optional.of(restaurant));
+                .willReturn(Optional.ofNullable(restaurant));
     }
 
     @Test
@@ -56,6 +59,23 @@ public class RestaurantServiceTests {
 
         assertThat(restaurant.getId()).isEqualTo(1004L);
     }
+
+    @Test
+    public void getRestaurantWithExisted(){
+        Restaurant restaurant = restaurantService.getRestaurant(1004L);
+
+        assertThat(restaurant.getId()).isEqualTo(1004L);
+
+        MenuItem menuItem = restaurant.getMenuItems().get(0);
+
+        assertThat(menuItem.getName()).isEqualTo("kimchi");
+    }
+
+    @Test
+    public void getRestaurantWithNotExisted(){
+        restaurantService.getRestaurant(404L);
+    }
+
 
     @Test
     public void addRestaurant() {
@@ -85,7 +105,7 @@ public class RestaurantServiceTests {
                 .build();
         //DB에서 해당 id 값 바꾸고
         given(restaurantRepository.findById(1004L))
-                .willReturn(Optional.of(restaurant));
+                .willReturn(Optional.ofNullable(restaurant));
         //정보 update
         restaurantService.updateRestaurant(
                 1004L,"Sool zip","Busan");

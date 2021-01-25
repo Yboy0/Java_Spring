@@ -57,7 +57,7 @@ public class RestaurantControllerTests {
                 ));
     }
     @Test
-    public void detail() throws Exception {
+    public void detailWithExisted() throws Exception {
         Restaurant restaurant=Restaurant.builder()
                 .id(1L)
                 .name("Bob")
@@ -68,7 +68,7 @@ public class RestaurantControllerTests {
                 .build()));
 
         given(restaurantService.getRestaurant(1L))
-                .willReturn(java.util.Optional.of(restaurant));
+                .willReturn(restaurant);
 
         mvc.perform(get("/restaurants/1"))
                 .andExpect(status().isOk())
@@ -82,6 +82,18 @@ public class RestaurantControllerTests {
                         containsString("kimchi")
                 ));
     }
+
+    @Test
+    public void detailWithNotExisted() throws Exception {
+        given(restaurantService.getRestaurant(404L))
+                .willThrow(new RestaurantNotFoundException(404L));
+
+        mvc.perform(get("/restaurants/404"))
+                .andExpect(status().isNotFound())
+                .andExpect(content().string("{}"));
+
+    }
+
 
     @Test
     public void createWithValidData() throws Exception {
