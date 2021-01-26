@@ -4,7 +4,7 @@
       <option name="executionName" />
       <option name="externalProjectPath" value="$PROJECT_DIR$/eatgo-api/src/test" />
       <option name="externalSystemIdString" value="GRADLE" />
-      <option name="scriptParameters" value="--tests &quot;com.example.eatgo.interfaces.ReviewControllerTests&quot;" />
+      <option name="scriptParameters" value="--tests &quot;com.example.ReviewControllerTests&quot;" />
       <option name="taskDescriptions">
         <list />
       </option>
