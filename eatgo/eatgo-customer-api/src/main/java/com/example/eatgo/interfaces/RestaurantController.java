@@ -20,8 +20,13 @@ public class RestaurantController {
 
 
     @GetMapping("/restaurants")
-    public List<Restaurant> list(){
-        List<Restaurant> restaurants = restaurantService.getRestaurants();
+    public List<Restaurant> list(
+            @RequestParam("region") String region,
+            @RequestParam("category") Long categoryId
+    ){
+
+        List<Restaurant> restaurants = restaurantService.getRestaurants(region, categoryId);
+
         return restaurants;
     }
 
@@ -52,14 +57,6 @@ public class RestaurantController {
         URI location = new URI("/restaurants/" + restaurant.getId());
         return ResponseEntity.created(location).body("{}");
     }
-    @PatchMapping("/restaurants/{id}")
-    public String update(@PathVariable("id") Long id ,
-                       @Valid @RequestBody Restaurant resource){
-        String name = resource.getName();
-        String address =resource.getAddress();
-        restaurantService.updateRestaurant(id,name,address);
 
-        return "{}";
 
-    }
 }

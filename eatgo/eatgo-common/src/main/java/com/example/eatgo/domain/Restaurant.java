@@ -25,17 +25,15 @@ public class Restaurant {
     @GeneratedValue
     private Long id;
 
+    @NotNull
+    private Long categoryId;
+
     @NotEmpty
     private String name;
 
     @NotEmpty
     private String address;
 
-    private String regionName;
-
-    private String categoryName;
-
-    private String tagNames;
 
     @Transient
     @JsonInclude(JsonInclude.Include.NON_NULL)

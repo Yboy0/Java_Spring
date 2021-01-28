@@ -23,16 +23,4 @@ public class CategoryController {
         return categories;
     }
 
-    @PostMapping("/categories")
-    public ResponseEntity<?> create(
-            @RequestBody Category resource
-            )throws URISyntaxException{
-        String name = resource.getName();
-        Category category = categoryService.addCategory(name);
-
-        String url = "/categories/"+category.getId();
-        return ResponseEntity.created(new URI(url)).body("{}");
-    }
-
-
 }

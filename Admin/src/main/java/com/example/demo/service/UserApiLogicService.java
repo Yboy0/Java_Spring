@@ -72,9 +72,6 @@ public class UserApiLogicService extends BaseService<UserApiRequest,UserApiRespo
                 .orElseGet(
                         () -> Header.Error("데이터 없음")
                 );
-
-
-
     }
 
     @Override
