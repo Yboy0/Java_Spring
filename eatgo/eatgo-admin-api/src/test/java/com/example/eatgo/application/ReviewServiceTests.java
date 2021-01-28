@@ -19,7 +19,7 @@ import static org.mockito.Mockito.verify;
 
 public class ReviewServiceTests {
 
-    @InjectMocks
+
     private ReviewService reviewService;
 
     @Mock
@@ -29,23 +29,12 @@ public class ReviewServiceTests {
     @BeforeEach
     public void setUp(){
         MockitoAnnotations.openMocks(this);
-        mockReviewRepository();
 
         reviewService = new ReviewService(reviewRepository);
 
 
     }
 
-    private void mockReviewRepository() {
-        List<Review> reviews = new ArrayList<>();
-        reviews.add(Review.builder()
-                .name("Yboy")
-                .score(1)
-                .description("BAD")
-                .build());
-        given(reviewRepository.findAllByRestaurantId(1004L))
-                .willReturn(reviews);
-    }
     @Test
     public void getReview(){
         //List<Review>reviews = reviewRepository.findAll();
