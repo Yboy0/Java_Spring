@@ -26,7 +26,8 @@ public class RestaurantService {
 
     public List<Restaurant> getRestaurants(String region, long categoryId){
         List<Restaurant> restaurants
-                = restaurantRepository.findAllByAddressContainingByCategoryId(region,categoryId);
+                = restaurantRepository.findAllByAddressContainingAndCategoryId(
+                        region,categoryId);
         return restaurants;
     }
 
@@ -39,6 +40,7 @@ public class RestaurantService {
 
         List<Review> reviews = reviewRepository.findAllByRestaurantId(id);
         restaurant.setReviews(reviews);
+
         return restaurant;
     }
 

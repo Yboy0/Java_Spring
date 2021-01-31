@@ -13,7 +13,7 @@ public interface RestaurantRepository extends CrudRepository<Restaurant,Long> {
 
     Optional<Restaurant> findById(Long id);
 
-    List<Restaurant> findAllByAddressContainingByCategoryId(
+    List<Restaurant> findAllByAddressContainingAndCategoryId(
             String region ,Long categoryId);
 
     Restaurant save(Restaurant restaurant);
