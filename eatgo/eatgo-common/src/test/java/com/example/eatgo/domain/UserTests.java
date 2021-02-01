@@ -16,4 +16,11 @@ public class UserTests {
         assertThat(user.getName()).isEqualTo("Yboy");
         assertThat(user.isAdmin()).isEqualTo(true);
     }
+    @Test
+    public  void accessToken(){
+        User user = User.builder()
+                .password("ACCESSTOKE")
+                .build();
+        assertThat(user.getAccessToken()).isEqualTo("ACCESSTOKE");
+    }
 }

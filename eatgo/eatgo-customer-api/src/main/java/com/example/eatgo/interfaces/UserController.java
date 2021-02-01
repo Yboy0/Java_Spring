@@ -30,7 +30,6 @@ public class UserController {
 //                .build();
         User user = userSevice.registerUser(email,name,password);
 
-
         String url = "/users/" + user.getId();
         return ResponseEntity.created(new URI(url)).body("{}");
     }

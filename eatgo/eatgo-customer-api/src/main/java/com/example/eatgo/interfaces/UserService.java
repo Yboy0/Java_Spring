@@ -1,6 +1,8 @@
 package com.example.eatgo.interfaces;
 
 import com.example.eatgo.application.EmailExistedException;
+import com.example.eatgo.application.EmailNotExistedException;
+import com.example.eatgo.application.PasswordWrongException;
 import com.example.eatgo.domain.User;
 import com.example.eatgo.domain.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,21 +16,24 @@ import java.util.Optional;
 @Service
 @Transactional
 public class UserService {
+
     private UserRepository userRepository;
 
+    private PasswordEncoder passwordEncoder;
+
     @Autowired
-    public UserService(UserRepository userRepository){
+    public UserService(UserRepository userRepository,
+                       PasswordEncoder passwordEncoder){
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public User registerUser(String email, String name, String password) {
-        Optional<User> existed = userRepository.finByEmail(email);
+        Optional<User> existed = userRepository.findByEmail(email);
         if(existed.isPresent()){
             throw new EmailExistedException(email);
         }
 
-
-        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodedPassword = passwordEncoder.encode(password);
 
         User user = User.builder()
@@ -39,5 +44,18 @@ public class UserService {
                 .build();
 
         return userRepository.save(user);
+    }
+
+
+    public User authenticate(String email, String password) {
+        //TODO:
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new EmailNotExistedException(email));
+
+        if(!passwordEncoder.matches(password,user.getPassword())){
+            throw new PasswordWrongException();
+        }
+
+        return user;
     }
 }
