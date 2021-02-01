@@ -2,6 +2,7 @@ package com.example.eatgo.application;
 
 import com.example.eatgo.domain.Region;
 import com.example.eatgo.domain.RegionRepository;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.mockito.Mock;
@@ -23,7 +24,7 @@ public class RegionServiceTests {
     @Mock
     private RegionRepository regionRepository;
 
-    @BeforeEach
+    @Before
     public void setup(){
         MockitoAnnotations.openMocks(this);
         regionService=new RegionService(regionRepository);

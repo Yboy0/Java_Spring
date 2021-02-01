@@ -2,6 +2,7 @@ package com.example.eatgo.application;
 
 import com.example.eatgo.domain.Category;
 import com.example.eatgo.domain.CategoryRepository;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.mockito.InjectMocks;
@@ -24,7 +25,7 @@ public class CategoryServiceTests {
     @Mock
     private CategoryRepository categoryRepository;
 
-    @BeforeEach
+    @Before
     public void setup(){
         MockitoAnnotations.openMocks(this);
         mockCategoryRepository();
@@ -49,7 +50,7 @@ public class CategoryServiceTests {
         List<Category> categories = categoryService.getCategory();
 
         Category category = categories.get(0);
-        assertThat(category.getName()).isEqualTo("Seoul");
+        assertThat(category.getName()).isEqualTo("Japanese Food");
     }
 
 

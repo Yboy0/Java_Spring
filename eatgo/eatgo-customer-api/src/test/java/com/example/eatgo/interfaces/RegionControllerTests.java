@@ -29,6 +29,7 @@ public class RegionControllerTests {
     @MockBean
     private RegionService regionService;
 
+
     @Test
     public void list() throws Exception {
         List<Region> regions = new ArrayList<>();

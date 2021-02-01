@@ -3,6 +3,7 @@ package com.example.eatgo.application;
 import com.example.eatgo.application.ReviewService;
 import com.example.eatgo.domain.Review;
 import com.example.eatgo.domain.ReviewRepository;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.mockito.InjectMocks;
@@ -26,7 +27,7 @@ public class ReviewServiceTests {
     private ReviewRepository reviewRepository;
 
 
-    @BeforeEach
+    @Before
     public void setUp(){
         MockitoAnnotations.openMocks(this);
         mockReviewRepository();
