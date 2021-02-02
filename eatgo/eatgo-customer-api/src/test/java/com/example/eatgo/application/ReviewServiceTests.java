@@ -55,7 +55,7 @@ public class ReviewServiceTests {
                 .score(3)
                 .description("Good")
                 .build();
-        reviewService.addReview(review,eq(1004L));
+        reviewService.addReview(1004L,"Joker",3,"Good");
 
         verify(reviewRepository).save(any());
     }
