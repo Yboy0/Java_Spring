@@ -1,6 +1,5 @@
-package com.example.eatgo.interfaces;
+package com.example.eatgo.application;
 
-import com.example.eatgo.application.EmailExistedException;
 import com.example.eatgo.application.EmailNotExistedException;
 import com.example.eatgo.application.PasswordWrongException;
 import com.example.eatgo.domain.User;
@@ -26,24 +25,6 @@ public class UserService {
                        PasswordEncoder passwordEncoder){
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
-    }
-
-    public User registerUser(String email, String name, String password) {
-        Optional<User> existed = userRepository.findByEmail(email);
-        if(existed.isPresent()){
-            throw new EmailExistedException(email);
-        }
-
-        String encodedPassword = passwordEncoder.encode(password);
-
-        User user = User.builder()
-                .email(email)
-                .name(name)
-                .password(encodedPassword)
-                .level(1L)
-                .build();
-
-        return userRepository.save(user);
     }
 
 

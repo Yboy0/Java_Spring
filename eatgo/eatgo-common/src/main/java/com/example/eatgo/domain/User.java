@@ -35,8 +35,10 @@ public class User {
 
     private String password;
 
+    private Long restaurantId;
+
     public boolean isAdmin(){
-        return level >= 3;
+        return level == 3L;
     }
 
     public boolean isActive() {
@@ -49,5 +51,9 @@ public class User {
     }
 
 
+    // restaurantId를 갖고 있으면 주인
+    public boolean isRestaurantOwner() {
+        return level == 1L;
+    }
 }
 
