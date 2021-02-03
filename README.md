@@ -1,5 +1,5 @@
 # Java_Spring
-자바 스프링으로 Backend 익히기 
+Backend가 무엇인지 이해하고 Spring으로 Backend를  경험해 보며 Backend개발의 기초적인 것을 경험해 보기 
 1. Admin Project
 1. eatgo Project
 
@@ -10,7 +10,7 @@
 
 ## GOALS
 1. Spring의 mvc pattern 이해하고 적용해 보기 
-1. Databas table 설계  
+1. Database table 설계  
 1. 실제 Database와 spring을 연결해 사용해 보기 
 1. JPA  
 1. Work Bench 
