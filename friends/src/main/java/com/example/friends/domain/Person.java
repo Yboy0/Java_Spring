@@ -2,9 +2,7 @@ package com.example.friends.domain;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
@@ -44,12 +42,8 @@ public class Person {
     @ToString.Exclude
     private String phoneNumber;
 
-    private boolean block; // 차단
-
-    private String blockReason;
-
-    private LocalDate blockStartDate;
-
-    private LocalDate blockEndDate;
+    /*{CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}*/
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
+    private Block block;
 
 }
