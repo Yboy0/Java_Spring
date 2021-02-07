@@ -1,6 +1,7 @@
 package com.example.friends.repository;
 
 import com.example.friends.domain.Person;
+import com.example.friends.domain.dto.Birthday;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -25,7 +26,7 @@ public class PersonRepositoryTests {
                 .bloodType("AB")
                 .address("Suwon")
                 .hobby("listening music")
-                .birthday(LocalDate.of(1997,06,27))
+                .birthday(new Birthday())
                 .job("student")
                 .build();
 

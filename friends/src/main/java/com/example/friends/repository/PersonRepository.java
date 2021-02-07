@@ -2,6 +2,8 @@ package com.example.friends.repository;
 
 import com.example.friends.domain.Person;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -18,5 +20,6 @@ public interface PersonRepository extends JpaRepository<Person,Long> {
     List<Person> findByBloodType(String bloodType);
 
     // 이번 달 생일인 사람 목록
-    List<Person> findByBirthdayBetween(LocalDate startDate, LocalDate endDate);
+    @Query(value = "select person from Person person where person.birthday.monthOfBirthday = :monthOfBirthday and person.birthday.dayOfBirthday = :dayOfBirthday")
+    List<Person> findByBirthdayBetween(@Param("monthOfBirthday") int monthOfBirthday, @Param("dayOfBirthday") int dayOfBirthday);
 }

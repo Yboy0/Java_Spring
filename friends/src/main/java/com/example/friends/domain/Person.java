@@ -1,8 +1,10 @@
 package com.example.friends.domain;
 
+import com.example.friends.domain.dto.Birthday;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
@@ -20,7 +22,7 @@ import java.time.LocalDate;
 public class Person {
 //8 atr
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull
@@ -35,7 +37,9 @@ public class Person {
 
     private String address;
 
-    private LocalDate birthday;
+    @Valid
+    @Embedded
+    private Birthday birthday;
 
     private String job;
 
