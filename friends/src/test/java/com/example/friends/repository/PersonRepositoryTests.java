@@ -22,8 +22,6 @@ public class PersonRepositoryTests {
     public void crud(){
         Person person= Person.builder()
                 .name("Yboy")
-                .age(25)
-                .bloodType("AB")
                 .address("Suwon")
                 .hobby("listening music")
                 .birthday(new Birthday())
@@ -42,11 +40,9 @@ public class PersonRepositoryTests {
     void hashCodeAndEquals(){
         Person person1 = Person.builder()
                 .name("martin")
-                .age(10)
                 .build();
         Person person2 = Person.builder()
                 .name("martin")
-                .age(10)
                 .build();
 
         System.out.println(person1.equals(person2));
