@@ -1,4 +1,4 @@
-package com.example.friends.contoller;
+package com.example.friends.controller;
 
 
 import org.junit.jupiter.api.Test;
@@ -9,7 +9,6 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 @SpringBootTest
