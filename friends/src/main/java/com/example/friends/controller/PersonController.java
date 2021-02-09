@@ -25,8 +25,8 @@ public class PersonController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED) //성공일 경우에 201번으로 return
-    public void postPerson(@RequestBody Person person){
-        personService.postPerson(person);
+    public void postPerson(@RequestBody PersonDto personDto){
+        personService.postPerson(personDto);
 
         //log.info("person -> {}", personRepository.findAll());
     }

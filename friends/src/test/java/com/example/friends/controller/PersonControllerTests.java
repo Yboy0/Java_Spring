@@ -15,6 +15,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.test.web.servlet.MockMvc;
@@ -66,8 +67,8 @@ class PersonControllerTests {
                 .andExpect(status().isOk())
                 //return 되는 json객체에서 name attribute를 갖고 오겠다는 것
                 .andExpect(jsonPath("$.name").value("martin"))
-                .andExpect(jsonPath("hobby").isEmpty())
-                .andExpect(jsonPath("address").isEmpty())
+                .andExpect(jsonPath("$.hobby").isEmpty())
+                .andExpect(jsonPath("$.address").isEmpty())
                 .andExpect(jsonPath("$.birthday").value("1997-06-27"))
                 .andExpect(jsonPath("$.job").isEmpty())
                 .andExpect(jsonPath("$.deleted").value(false))
@@ -82,11 +83,31 @@ class PersonControllerTests {
     @Test
     public void postPerson() throws Exception{
         //content json 타입으로
+        PersonDto dto = PersonDto.builder()
+                .name("martin")
+                .hobby("programming")
+                .address("suwon")
+                .birthday(LocalDate.now())
+                .phoneNumber("010-9283-6657")
+                .job("programmer")
+                .build();
 
         mockMvc.perform(post("/api/person")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content("{\"name\": \"martin2\"}"))
+                .content(toJsonString(dto)))
                 .andExpect(status().isCreated());
+
+        Person result = personRepository.findAll(Sort.by(Sort.Direction.DESC,"id"))
+                    .get(0);
+
+        assertAll(
+//                () -> assertThat(result.getName()).isEqualTo("martin"),
+//                () -> assertThat(result.getHobby()).isEqualTo("programming"),
+//                () -> assertThat(result.getAddress()).isEqualTo("판교"),
+//                () -> assertThat(result.getBirthday()).isEqualTo(Birthday.of(LocalDate.now())),
+//                () -> assertThat(result.getJob()).isEqualTo("programmer"),
+//                () -> assertThat(result.getPhoneNumber()).isEqualTo("010-9283-6657")
+        );
     }
 
     @Test
