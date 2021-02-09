@@ -46,7 +46,11 @@ public class PersonController {
     }
     @DeleteMapping("/{id}")
     public void deletePerson(@PathVariable Long id){
+
         personService.deletePerson(id);
+
         log.info("person -> {}", personRepository.findById(id));
+
+
     }
 }
