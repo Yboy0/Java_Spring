@@ -19,38 +19,37 @@ public class PersonController {
     private PersonRepository personRepository;
 
     @GetMapping("/{id}") //http://localhost:8080/api/person/1
-    public Person getPerson(@PathVariable Long id){
+    public Person getPerson(@PathVariable Long id) {
         return personService.getPerson(id);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED) //성공일 경우에 201번으로 return
-    public void postPerson(@RequestBody PersonDto personDto){
+    public void postPerson(@RequestBody PersonDto personDto) {
         personService.postPerson(personDto);
-
         //log.info("person -> {}", personRepository.findAll());
     }
 
     @PutMapping("/{id}")
-    public void modifyPerson(@PathVariable Long id, @RequestBody PersonDto personDto){
-        personService.modifyPerson(id,personDto);
-
-       log.info("person -> {}", personRepository.findById(id));
-    }
-
-    @PatchMapping("/{id}")
-    public void modifyPerson(@PathVariable Long id, String name){
-        personService.modifyPerson(id,name);
+    public void modifyPerson(@PathVariable Long id, @RequestBody PersonDto personDto) {
+        personService.modifyPerson(id, personDto);
 
         log.info("person -> {}", personRepository.findById(id));
     }
+
+    @PatchMapping("/{id}")
+    public void modifyPerson(@PathVariable Long id, String name) {
+        personService.modifyPerson(id, name);
+
+        log.info("person -> {}", personRepository.findById(id));
+    }
+
     @DeleteMapping("/{id}")
-    public void deletePerson(@PathVariable Long id){
+    public void deletePerson(@PathVariable Long id) {
 
         personService.deletePerson(id);
 
         log.info("person -> {}", personRepository.findById(id));
-
 
     }
 }

@@ -25,4 +25,7 @@ public interface PersonRepository extends JpaRepository<Person,Long> {
     //query를 통해 삭제된 정보까지 확인
     @Query(value = "select * from Person person where person.deleted = true",nativeQuery = true)
     List<Person> findPeopleDeleted();
+
+    @Query(value = "select person from Person person where person.birthday.monthOfBirthday = :monthOfBirthday")
+    List<Person> findByMonthOfBirthday(@Param("monthOfBirthday") int monthOfBirthday);
 }

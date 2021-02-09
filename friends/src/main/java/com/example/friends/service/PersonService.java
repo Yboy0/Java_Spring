@@ -48,7 +48,7 @@ public class PersonService {
     }
 
     @Transactional
-    public void postPerson(PersonDto personDto){
+    public void postPerson(PersonDto personDto) {
         Person person = new Person();
         person.set(personDto);
         person.setName(personDto.getName());

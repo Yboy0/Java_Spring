@@ -8,6 +8,9 @@ import com.example.friends.service.PersonService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
+import com.example.friends.domain.Person;
+import com.example.friends.repository.PersonRepository;
+import com.example.friends.service.PersonService;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.BeforeAll;
@@ -25,6 +28,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.util.NestedServletException;
 
 import java.time.LocalDate;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -34,6 +41,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @Slf4j
 @Transactional
+
 class PersonControllerTests {
     @Autowired
     private  PersonController personController;
@@ -54,8 +62,7 @@ class PersonControllerTests {
 
 
     @BeforeEach
-    void beforeEach(){
-
+    void beforeEach() throws Exception {
         mockMvc = MockMvcBuilders.standaloneSetup(personController).setMessageConverters(messageConverter).build();
     }
 
@@ -97,18 +104,20 @@ class PersonControllerTests {
                 .content(toJsonString(dto)))
                 .andExpect(status().isCreated());
 
-        Person result = personRepository.findAll(Sort.by(Sort.Direction.DESC,"id"))
-                    .get(0);
+     Person result = personRepository.findAll(Sort.by(Sort.Direction.DESC,"id"))
+                .get(0);
 
         assertAll(
-//                () -> assertThat(result.getName()).isEqualTo("martin"),
+               () -> assertThat(result.getName()).isEqualTo("martin")
 //                () -> assertThat(result.getHobby()).isEqualTo("programming"),
 //                () -> assertThat(result.getAddress()).isEqualTo("판교"),
 //                () -> assertThat(result.getBirthday()).isEqualTo(Birthday.of(LocalDate.now())),
 //                () -> assertThat(result.getJob()).isEqualTo("programmer"),
 //                () -> assertThat(result.getPhoneNumber()).isEqualTo("010-9283-6657")
         );
+
     }
+
 
     @Test
     public void modifyPerson() throws Exception{
@@ -151,19 +160,22 @@ class PersonControllerTests {
                 .andExpect(status().isOk()));
 
         Person modperson = personService.getPerson(1L);
-        assertThat(modperson.getName()).isEqualTo("martin1");
+        assertThat(modperson.getName()).isEqualTo("martin");
 
     }
 
     @Test
     void modifyName() throws Exception {
+
         PersonDto dto = PersonDto.of("james","programming","판교",LocalDate.now(),"programmer","010-9283-6657");
+
 
         mockMvc.perform(patch("/api/person/1")
                 .param("name","david"))
                 .andExpect(status().isOk());
 
         assertThat(personRepository.findById(1L).get().getName()).isEqualTo("david");
+
     }
 
     @Test
@@ -192,6 +204,4 @@ class PersonControllerTests {
     private String toJsonString(PersonDto personDto) throws JsonProcessingException {
         return objectMapper.writeValueAsString(personDto);
     }
-
-
 }

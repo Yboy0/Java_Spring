@@ -18,35 +18,35 @@ public class PersonRepositoryTests {
     @Autowired //PersonRepository에 bean을 주입
     private PersonRepository personRepository;
 
-    @Test
-    public void crud(){
-        Person person= Person.builder()
-                .name("Yboy")
-                .address("Suwon")
-                .hobby("listening music")
-                .birthday(new Birthday())
-                .job("student")
-                .build();
+   @Test
+    void findByName(){
+       List<Person> people = personRepository.findByName("paul");
+       assertThat(people.size()).isEqualTo(1);
 
-        personRepository.save(person);
+       Person person = people.get(0);
+       assertAll(
+               () -> assertThat(person.getJob()).isEqualTo("officer"),
+               () -> assertThat(person.getHobby()).isEqualTo("reading")
+       );
 
-        List<Person> people = personRepository.findAll();
+   }
 
-        assertThat(people.get(0).getId()).isEqualTo(1L);
+   @Test
+    void findByNameIfDeleted(){
+       List<Person> people = personRepository.findByName("andrew");
 
-        System.out.println(people.get(0));
-    }
-    @Test
-    void hashCodeAndEquals(){
-        Person person1 = Person.builder()
-                .name("martin")
-                .build();
-        Person person2 = Person.builder()
-                .name("martin")
-                .build();
+       assertThat(people.size()).isEqualTo(0);
+   }
 
-        System.out.println(person1.equals(person2));
-        System.out.println(person1.hashCode());
-        System.out.println(person2.hashCode());
-    }
+   @Test
+    void findByMonthOfBirthday(){
+       List<Person> people = personRepository.findByMonthOfBirthday(7);
+
+       assertThat(people.size()).isEqualTo(2);
+       assertAll(
+               () -> assertThat(people.get(0).getName()).isEqualTo("martin")
+       );
+   }
+
+
 }
