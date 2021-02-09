@@ -64,7 +64,7 @@ public class Person {
             this.setAddress(persnoDto.getAddress());
         }
         if(persnoDto.getJob() != null){
-            this.setAddress(persnoDto.getJob());
+            this.setJob(persnoDto.getJob());
         }
         if(persnoDto.getPhoneNumber() != null){
             this.setPhoneNumber(persnoDto.getPhoneNumber());
