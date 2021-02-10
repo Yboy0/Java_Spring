@@ -3,6 +3,8 @@ package com.example.friends.service;
 
 import com.example.friends.controller.dto.PersonDto;
 import com.example.friends.domain.Person;
+import com.example.friends.exception.PersonNotFoundException;
+import com.example.friends.exception.RenameNotPermittedException;
 import com.example.friends.repository.PersonRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,8 +61,9 @@ public class PersonService {
     public void modifyPerson(Long id, PersonDto personDto) {
         Person personDb = personRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("아이디가 존재하지 않습니다"));
+
         if(!personDb.getName().equals(personDto.getName())){
-            throw new RuntimeException("이름이 다릅니다");
+            throw new RenameNotPermittedException();
         }
 
         personDb.set(personDto);
@@ -71,7 +74,7 @@ public class PersonService {
     @Transactional
     public void modifyPerson(Long id, String name) {
        Person person = personRepository.findById(id)
-               .orElseThrow(() -> new RuntimeException("아이디가 존재 하지 않습니다"));
+               .orElseThrow(PersonNotFoundException::new);
 
        person.setName(name);
 
