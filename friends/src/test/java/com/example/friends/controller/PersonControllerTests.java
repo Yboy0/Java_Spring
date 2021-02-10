@@ -34,6 +34,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -63,7 +64,11 @@ class PersonControllerTests {
 
     @BeforeEach
     void beforeEach() throws Exception {
-        mockMvc = MockMvcBuilders.standaloneSetup(personController).setMessageConverters(messageConverter).build();
+        mockMvc = MockMvcBuilders
+                .standaloneSetup(personController)
+                .setMessageConverters(messageConverter)
+                .alwaysDo(print())
+                .build();
     }
 
 
@@ -87,6 +92,7 @@ class PersonControllerTests {
     private int getAge(int yearOfBirthday){
         return LocalDate.now().getYear() - yearOfBirthday+1;
     }
+
     @Test
     public void postPerson() throws Exception{
         //content json 타입으로
@@ -108,15 +114,25 @@ class PersonControllerTests {
                 .get(0);
 
         assertAll(
-               () -> assertThat(result.getName()).isEqualTo("martin")
-//                () -> assertThat(result.getHobby()).isEqualTo("programming"),
-//                () -> assertThat(result.getAddress()).isEqualTo("판교"),
-//                () -> assertThat(result.getBirthday()).isEqualTo(Birthday.of(LocalDate.now())),
-//                () -> assertThat(result.getJob()).isEqualTo("programmer"),
-//                () -> assertThat(result.getPhoneNumber()).isEqualTo("010-9283-6657")
+                () -> assertThat(result.getName()).isEqualTo("martin"),
+                () -> assertThat(result.getHobby()).isEqualTo("programming"),
+                () -> assertThat(result.getAddress()).isEqualTo("suwon"),
+                () -> assertThat(result.getBirthday()).isEqualTo(Birthday.of(LocalDate.now())),
+                () -> assertThat(result.getJob()).isEqualTo("programmer"),
+                () -> assertThat(result.getPhoneNumber()).isEqualTo("010-9283-6657")
         );
 
     }
+
+    @Test
+    void postPersonIfNameIsNull() throws  Exception{
+        PersonDto dto = new PersonDto();
+
+        mockMvc.perform(post("/api/person")
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(toJsonString(dto)));
+    }
+
 
 
     @Test
@@ -153,16 +169,32 @@ class PersonControllerTests {
     public void modifyPersonIfNameDifferent() throws Exception{
         PersonDto dto = PersonDto.of("james","programming","판교",LocalDate.now(),"programmer","010-9283-6657");
 
-        assertThrows(NestedServletException.class, () ->
+
             mockMvc.perform(put("/api/person/1")
                     .contentType(MediaType.APPLICATION_JSON_VALUE)
                     .content(toJsonString(dto)))
-                .andExpect(status().isOk()));
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.code").value(400))
+                .andExpect(jsonPath("$.message").value("이름 변경이 허용되지 않습니다"))
+            ;
 
         Person modperson = personService.getPerson(1L);
         assertThat(modperson.getName()).isEqualTo("martin");
 
     }
+
+    @Test
+    void modifyPersonIfPersonNotFound() throws Exception{
+        PersonDto dto = PersonDto.of("james","programming","판교",LocalDate.now(),"programmer","010-9283-6657");
+        mockMvc.perform(put("/api/person/10")
+                    .contentType(MediaType.APPLICATION_JSON_VALUE)
+                    .content(toJsonString(dto)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.code").value(400))
+                .andExpect(jsonPath("$.message").value("Person Entity가 존재하지 않습니다"));
+
+    }
+
 
     @Test
     void modifyName() throws Exception {

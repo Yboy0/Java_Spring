@@ -60,7 +60,7 @@ public class PersonService {
     @Transactional
     public void modifyPerson(Long id, PersonDto personDto) {
         Person personDb = personRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("아이디가 존재하지 않습니다"));
+                .orElseThrow(PersonNotFoundException::new);
 
         if(!personDb.getName().equals(personDto.getName())){
             throw new RenameNotPermittedException();
