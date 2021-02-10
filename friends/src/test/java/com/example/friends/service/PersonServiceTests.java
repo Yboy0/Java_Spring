@@ -16,6 +16,10 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
@@ -43,6 +47,19 @@ public class PersonServiceTests {
 //
 //        result.forEach(System.out::println);
 //    }
+    @Test
+    void getAll(){
+        when(personRepository.findAll(any(Pageable.class)))
+                .thenReturn(new PageImpl<>(Lists.newArrayList(
+                        Person.builder().name("martin").build(),
+                        Person.builder().name("dennis").build(),
+                        Person.builder().name("tony").build())));
+
+        Page<Person> result = personService.getAll(PageRequest.of(0,3));
+
+        assertThat(result.getNumberOfElements()).isEqualTo(3);
+        assertThat(result.getContent().get(2).getName()).isEqualTo("tony");
+    }
 
     @Test
     void getPeopleByName(){

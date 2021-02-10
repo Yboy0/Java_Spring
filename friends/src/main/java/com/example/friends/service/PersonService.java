@@ -8,6 +8,8 @@ import com.example.friends.exception.RenameNotPermittedException;
 import com.example.friends.repository.PersonRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -38,6 +40,10 @@ public class PersonService {
 ////                .collect(Collectors.toList());
 ////        return personRepository.findByBlockIsNull();
 //    }
+
+    public Page<Person> getAll(Pageable pageable) {
+        return personRepository.findAll(pageable);
+    }
 
     @Transactional
     public Person getPerson(Long id){
@@ -105,7 +111,5 @@ public class PersonService {
 //                .collect(Collectors.toList());
         return personRepository.findByName(name);
     }
-
-
 
 }
